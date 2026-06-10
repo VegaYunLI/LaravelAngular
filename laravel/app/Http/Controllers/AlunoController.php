@@ -6,22 +6,31 @@ use Illuminate\Http\Request;
 
 class AlunoController extends Controller
 {
-    function index(){ 
-        return view('aluno.index');
-    }
-
     function add(Request $dados) { 
+        $dados->validate([
+                'nome' => 'required|min:3'
+            ]);
         $aluno = new \App\Models\AlunoModel();
         $aluno::create($dados->all());
 
         $alunos = new \App\Models\AlunoModel();
 
-        return view('aluno.index', ['success'=>'Cadastrado!', 'alunos'=>$alunos::all()]);
+        return response()->json($alunos->all(), 200);
     }
 
-    function remove() { }
+    function remove(string $id) {
+        $aluno = new \App\Models\AlunoModel();
+        // $aluno::reset($id);
+        $aluno::destroy($id);
 
-    function edit() { }
+		return response()->json([$aluno->all()], 200);
 
-    function list() { }
+    }
+    function atualizar(Request $dados, string $id) {
+        $aluno = new \App\Models\AlunoModel();
+        $aluno::where('id', $id)->update($dados->all());
+
+        return response()->json([$aluno->all()], 200);
+        
+    }
 }

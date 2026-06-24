@@ -1,66 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel API + Telas de Cadastro
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Projeto Laravel com endpoints para cadastro de aluno, curso e professor, além de telas HTML simples em `telas-cadastro/`.
 
-## About Laravel
+## Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.1 ou superior
+- Composer
+- MySQL ou Laragon
+- Extensões PHP habilitadas: `pdo_mysql`, `mysqli` e `zip`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Como Rodar Depois do Git Clone
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Instale as dependências:
 
-## Learning Laravel
+```bash
+composer install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Crie o arquivo `.env`:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+cp .env.example .env
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+No Windows PowerShell, se o comando acima não funcionar:
 
-## Laravel Sponsors
+```powershell
+Copy-Item .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Gere a chave da aplicação:
 
-### Premium Partners
+```bash
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Configure o banco no `.env`:
 
-## Contributing
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3308
+DB_DATABASE=atividade2
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Se estiver usando outra porta, altere `DB_PORT` conforme o seu MySQL. Por exemplo, no Laragon pode ser `3307`:
 
-## Code of Conduct
+```env
+DB_PORT=3307
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Crie o banco `atividade2` no MySQL/Laragon e rode as migrations:
 
-## Security Vulnerabilities
+```bash
+php artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Inicie a API Laravel:
 
-## License
+```bash
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+A API ficará em:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Rodar as Telas HTML
+
+Em outro terminal, rode:
+
+```bash
+php -S 127.0.0.1:5500 -t telas-cadastro
+```
+
+Abra no navegador:
+
+```text
+http://127.0.0.1:5500/cadastrar-aluno.html
+http://127.0.0.1:5500/cadastrar-curso.html
+http://127.0.0.1:5500/cadastrar-professor.html
+```
+
+## Endpoints
+
+```text
+POST http://127.0.0.1:8000/api/aluno/add
+POST http://127.0.0.1:8000/api/curso/add
+POST http://127.0.0.1:8000/api/professor/add
+```
+
+Corpo da requisição:
+
+```json
+{
+  "nome": "Nome Teste"
+}
+```
+
+## Verificar Cadastros Criados
+
+Depois de cadastrar pelo HTML, abra o console do navegador com `F12`. A resposta da API será exibida no console com os registros cadastrados.
+
+Também é possível verificar direto no banco. Entre no MySQL:
+
+```bash
+mysql -u root -p
+```
+
+Se estiver usando Laragon com usuário `root` sem senha:
+
+```bash
+mysql -u root
+```
+
+Se o MySQL estiver em outra porta, por exemplo `3307`:
+
+```bash
+mysql -h 127.0.0.1 -P 3307 -u root
+```
+
+Depois execute:
+
+```sql
+USE atividade2;
+
+SELECT * FROM aluno;
+SELECT * FROM curso;
+SELECT * FROM professor;
+```
+
+## Problemas Comuns
+
+Se aparecer `could not find driver`, habilite `pdo_mysql` no `php.ini`.
+
+Se aparecer erro de senha do MySQL, confira `DB_USERNAME` e `DB_PASSWORD` no `.env`.
+
+Se abrir os HTMLs com `file:///`, pode ocorrer erro de origem no navegador. Use sempre:
+
+```text
+http://127.0.0.1:5500/cadastrar-aluno.html
+```

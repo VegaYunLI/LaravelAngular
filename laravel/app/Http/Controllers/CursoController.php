@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AlunoController extends Controller
+class CursoController extends Controller
 {
     function add(Request $dados)
     {
@@ -17,10 +17,10 @@ class AlunoController extends Controller
             'nome.regex'    => 'O nome deve conter apenas letras e espaços.',
         ]);
 
-        $aluno = new \App\Models\AlunoModel();
-        $aluno::create($dados->only('nome'));
+        $curso = new \App\Models\CursoModel();
+        $curso::create($dados->only('nome'));
 
-        return response()->json($aluno->all(), 200);
+        return response()->json($curso->all(), 200);
     }
 
     function remove(string $id)
@@ -29,16 +29,16 @@ class AlunoController extends Controller
             return response()->json(['erro' => 'ID inválido.'], 422);
         }
 
-        $aluno = new \App\Models\AlunoModel();
-        $existe = $aluno::find($id);
+        $curso = new \App\Models\CursoModel();
+        $existe = $curso::find($id);
 
         if (!$existe) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
+            return response()->json(['erro' => 'Curso não encontrado.'], 404);
         }
 
-        $aluno::destroy($id);
+        $curso::destroy($id);
 
-        return response()->json($aluno->all(), 200);
+        return response()->json($curso->all(), 200);
     }
 
     function atualizar(Request $dados, string $id)
@@ -56,15 +56,15 @@ class AlunoController extends Controller
             'nome.regex'    => 'O nome deve conter apenas letras e espaços.',
         ]);
 
-        $aluno = new \App\Models\AlunoModel();
-        $existe = $aluno::find($id);
+        $curso = new \App\Models\CursoModel();
+        $existe = $curso::find($id);
 
         if (!$existe) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
+            return response()->json(['erro' => 'Curso não encontrado.'], 404);
         }
 
-        $aluno::where('id', $id)->update($dados->only('nome'));
+        $curso::where('id', $id)->update($dados->only('nome'));
 
-        return response()->json($aluno->all(), 200);
+        return response()->json($curso->all(), 200);
     }
 }
